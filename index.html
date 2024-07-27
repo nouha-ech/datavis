@@ -1,0 +1,78 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real Time Data</title>
+  </head>
+
+  <style>
+    html,
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      margin-top: 50%;
+      width: 500px !important;
+      height: 250px !important;
+    }
+  </style>
+
+  <body>
+    <canvas id="chart_id"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      //pour initialiser socket
+      let socket = io();
+
+      // pour canvas
+      let ctx = document.getElementById("chart_id").getContext("2d");
+
+      // la configuration d'animation
+      let optionsSet = {
+        animation: true,
+        responsive: true,
+      };
+
+      // data points
+      let data = {
+        labels: [0],
+        datasets: [
+          {
+            data: [0],
+            label: "Data",
+            backgroundColor: "#ffdf00",
+            borderColor: "#ffdf00",
+          },
+        ],
+      };
+
+      //initialisation
+      let chart = new Chart(ctx, {
+        type: "line",
+        data: data,
+        options: optionsSet,
+      });
+
+      //listen for websocket event and update chart
+      socket.on("socketevent1", function (value) {
+        let length = data.labels.length;
+        if (length >= 20) {
+          data.datasets[0].data.shift();
+          data.labels.shift();
+        }
+        data.labels.push(value);
+        data.datasets[0].data.push(value);
+        chart.update();
+      });
+    </script>
+  </body>
+</html>
