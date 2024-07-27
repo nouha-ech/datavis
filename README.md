@@ -1,7 +1,6 @@
 # Visualisation des Données en Temps Réel avec Socket.IO et Chart.js
 
 
-![ezgif-6-64901a6510](https://github.com/user-attachments/assets/862205a2-c133-4804-b957-53f49feaf334) 
 ## Aperçu
 Ce projet démontre comment visualiser des données en temps réel en utilisant Socket.IO pour la communication en temps réel et Chart.js pour le rendu des graphiques.
 
